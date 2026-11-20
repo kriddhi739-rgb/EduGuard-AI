@@ -1,0 +1,121 @@
+Student_ID,Student_Name,Department,Attendance,CGPA,LMS_Activity,Fee_Dues,Semester,Email
+EDU1001,Kabir Verma,Electronics & Comm.,96.3,9.24,79.4,0.0,6,kabir.verma1@eduguard.edu
+EDU1002,Pooja Bose,Computer Science,76.0,7.05,69.4,1200.0,2,pooja.bose2@eduguard.edu
+EDU1003,Dev Malhotra,Information Technology,47.3,5.4,19.4,3200.0,6,dev.malhotra3@eduguard.edu
+EDU1004,Sneha Bose,Information Technology,36.9,4.02,35.4,3200.0,4,sneha.bose4@eduguard.edu
+EDU1005,Aarav Iyer,Information Technology,87.4,9.39,94.8,0.0,6,aarav.iyer5@eduguard.edu
+EDU1006,Dev Patel,Electronics & Comm.,70.5,7.26,62.2,500.0,2,dev.patel6@eduguard.edu
+EDU1007,Rhea Singh,AI & Data Science,70.1,6.1,54.5,0.0,4,rhea.singh7@eduguard.edu
+EDU1008,Sneha Reddy,Mechanical Engineering,77.6,6.58,52.9,0.0,6,sneha.reddy8@eduguard.edu
+EDU1009,Pooja Malhotra,Mechanical Engineering,77.8,6.38,66.5,0.0,6,pooja.malhotra9@eduguard.edu
+EDU1010,Pooja Singh,Information Technology,73.7,6.81,70.6,0.0,6,pooja.singh10@eduguard.edu
+EDU1011,Varun Singh,AI & Data Science,67.3,5.97,51.6,4198.0,8,varun.singh11@eduguard.edu
+EDU1012,Aditya Verma,Computer Science,78.4,6.62,60.3,0.0,4,aditya.verma12@eduguard.edu
+EDU1013,Ananya Gupta,Mechanical Engineering,63.6,6.39,50.5,6202.0,8,ananya.gupta13@eduguard.edu
+EDU1014,Dev Malhotra,Mechanical Engineering,87.8,8.19,86.5,0.0,8,dev.malhotra14@eduguard.edu
+EDU1015,Aarav Nair,Information Technology,70.6,7.36,57.7,0.0,6,aarav.nair15@eduguard.edu
+EDU1016,Varun Verma,AI & Data Science,73.0,6.37,55.0,0.0,6,varun.verma16@eduguard.edu
+EDU1017,Alia Sharma,Mechanical Engineering,57.7,5.03,24.1,3200.0,4,alia.sharma17@eduguard.edu
+EDU1018,Diya Sharma,Mechanical Engineering,91.5,9.14,82.4,0.0,4,diya.sharma18@eduguard.edu
+EDU1019,Siddharth Singh,Electronics & Comm.,69.3,7.11,55.3,3557.0,4,siddharth.singh19@eduguard.edu
+EDU1020,Siddharth Mehta,Electronics & Comm.,71.3,7.32,70.0,1200.0,2,siddharth.mehta20@eduguard.edu
+EDU1021,Nikhil Nair,Mechanical Engineering,95.0,9.54,95.5,0.0,6,nikhil.nair21@eduguard.edu
+EDU1022,Gaurav Iyer,AI & Data Science,74.1,6.06,53.2,0.0,2,gaurav.iyer22@eduguard.edu
+EDU1023,Ishaan Joshi,Mechanical Engineering,72.4,6.82,66.6,5750.0,4,ishaan.joshi23@eduguard.edu
+EDU1024,Arjun Deshmukh,Mechanical Engineering,49.2,4.35,27.8,1500.0,4,arjun.deshmukh24@eduguard.edu
+EDU1025,Nikhil Chopra,Computer Science,88.8,8.53,85.4,0.0,6,nikhil.chopra25@eduguard.edu
+EDU1026,Siddharth Nair,Computer Science,95.9,9.71,77.9,0.0,6,siddharth.nair26@eduguard.edu
+EDU1027,Diya Deshmukh,Information Technology,88.3,8.42,88.6,0.0,6,diya.deshmukh27@eduguard.edu
+EDU1028,Siddharth Iyer,Electronics & Comm.,78.2,7.39,63.0,0.0,2,siddharth.iyer28@eduguard.edu
+EDU1029,Karthik Verma,Mechanical Engineering,96.6,7.81,78.5,0.0,4,karthik.verma29@eduguard.edu
+EDU1030,Siddharth Bose,Information Technology,62.6,6.74,45.7,5914.0,4,siddharth.bose30@eduguard.edu
+EDU1031,Alia Nair,Electronics & Comm.,42.7,4.2,39.8,3200.0,8,alia.nair31@eduguard.edu
+EDU1032,Simran Mehta,AI & Data Science,67.6,6.7,62.3,4811.0,4,simran.mehta32@eduguard.edu
+EDU1033,Ananya Deshmukh,Mechanical Engineering,97.1,8.1,80.2,0.0,6,ananya.deshmukh33@eduguard.edu
+EDU1034,Sneha Joshi,Mechanical Engineering,91.2,8.22,96.2,0.0,2,sneha.joshi34@eduguard.edu
+EDU1035,Bhavna Kulkarni,Information Technology,45.1,5.57,32.7,3200.0,4,bhavna.kulkarni35@eduguard.edu
+EDU1036,Kabir Sharma,Information Technology,89.5,9.68,85.2,0.0,2,kabir.sharma36@eduguard.edu
+EDU1037,Vikram Mehta,Information Technology,43.4,4.15,23.9,1500.0,2,vikram.mehta37@eduguard.edu
+EDU1038,Varun Deshmukh,Electronics & Comm.,95.1,8.84,91.8,0.0,4,varun.deshmukh38@eduguard.edu
+EDU1039,Tanvi Verma,AI & Data Science,78.3,7.52,68.0,500.0,4,tanvi.verma39@eduguard.edu
+EDU1040,Arjun Mehta,Electronics & Comm.,69.9,7.6,55.2,0.0,4,arjun.mehta40@eduguard.edu
+EDU1041,Ananya Sharma,Mechanical Engineering,53.5,4.6,28.3,0.0,4,ananya.sharma41@eduguard.edu
+EDU1042,Aditya Reddy,AI & Data Science,96.0,8.35,93.2,0.0,4,aditya.reddy42@eduguard.edu
+EDU1043,Arjun Bose,Mechanical Engineering,52.8,4.87,42.3,0.0,4,arjun.bose43@eduguard.edu
+EDU1044,Rohan Reddy,Computer Science,82.1,6.96,62.2,1200.0,6,rohan.reddy44@eduguard.edu
+EDU1045,Rhea Iyer,Information Technology,61.8,6.97,65.5,5582.0,4,rhea.iyer45@eduguard.edu
+EDU1046,Ishaan Nair,Computer Science,62.0,3.57,40.7,3200.0,6,ishaan.nair46@eduguard.edu
+EDU1047,Dev Chopra,AI & Data Science,78.2,6.84,59.9,0.0,8,dev.chopra47@eduguard.edu
+EDU1048,Arjun Nair,Computer Science,78.4,6.07,66.1,500.0,6,arjun.nair48@eduguard.edu
+EDU1049,Nikhil Chopra,Mechanical Engineering,74.0,6.33,72.4,1200.0,6,nikhil.chopra49@eduguard.edu
+EDU1050,Tanvi Mehta,Information Technology,80.1,6.7,57.4,0.0,2,tanvi.mehta50@eduguard.edu
+EDU1051,Alia Verma,Information Technology,90.5,9.36,94.3,0.0,6,alia.verma51@eduguard.edu
+EDU1052,Pooja Patel,Information Technology,92.6,9.71,79.2,0.0,4,pooja.patel52@eduguard.edu
+EDU1053,Aarav Singh,AI & Data Science,90.8,8.1,75.0,0.0,6,aarav.singh53@eduguard.edu
+EDU1054,Arjun Bose,AI & Data Science,75.9,6.18,51.6,500.0,8,arjun.bose54@eduguard.edu
+EDU1055,Pooja Reddy,Mechanical Engineering,81.6,6.16,69.0,1200.0,6,pooja.reddy55@eduguard.edu
+EDU1056,Vikram Deshmukh,Computer Science,65.3,5.91,67.5,4159.0,8,vikram.deshmukh56@eduguard.edu
+EDU1057,Rohan Deshmukh,AI & Data Science,86.8,8.12,83.1,0.0,4,rohan.deshmukh57@eduguard.edu
+EDU1058,Aarav Mehta,Mechanical Engineering,90.4,7.99,83.8,0.0,8,aarav.mehta58@eduguard.edu
+EDU1059,Vikram Malhotra,Mechanical Engineering,60.3,6.8,48.1,4750.0,2,vikram.malhotra59@eduguard.edu
+EDU1060,Pooja Patel,Electronics & Comm.,80.1,7.72,65.6,0.0,2,pooja.patel60@eduguard.edu
+EDU1061,Varun Singh,Information Technology,74.9,6.28,58.6,0.0,6,varun.singh61@eduguard.edu
+EDU1062,Aditya Gupta,Information Technology,79.5,7.6,69.4,0.0,6,aditya.gupta62@eduguard.edu
+EDU1063,Simran Malhotra,Mechanical Engineering,80.8,6.26,63.7,500.0,4,simran.malhotra63@eduguard.edu
+EDU1064,Diya Nair,Information Technology,97.6,9.08,75.8,0.0,4,diya.nair64@eduguard.edu
+EDU1065,Simran Reddy,Information Technology,83.8,9.52,75.2,0.0,2,simran.reddy65@eduguard.edu
+EDU1066,Vikram Bose,Electronics & Comm.,82.2,9.73,75.4,0.0,6,vikram.bose66@eduguard.edu
+EDU1067,Ananya Joshi,Computer Science,68.5,7.18,50.3,0.0,6,ananya.joshi67@eduguard.edu
+EDU1068,Aarav Malhotra,Computer Science,84.3,9.55,78.4,0.0,4,aarav.malhotra68@eduguard.edu
+EDU1069,Siddharth Malhotra,AI & Data Science,97.2,9.59,82.4,0.0,6,siddharth.malhotra69@eduguard.edu
+EDU1070,Pooja Deshmukh,AI & Data Science,76.1,5.59,46.7,3997.0,6,pooja.deshmukh70@eduguard.edu
+EDU1071,Karthik Sharma,Information Technology,57.4,4.61,42.1,1500.0,2,karthik.sharma71@eduguard.edu
+EDU1072,Rhea Reddy,AI & Data Science,68.8,6.57,51.7,1200.0,8,rhea.reddy72@eduguard.edu
+EDU1073,Anika Iyer,Electronics & Comm.,51.1,4.72,23.4,3200.0,6,anika.iyer73@eduguard.edu
+EDU1074,Bhavna Kulkarni,Information Technology,85.4,7.99,81.2,0.0,4,bhavna.kulkarni74@eduguard.edu
+EDU1075,Meera Singh,Information Technology,68.9,7.03,59.6,3291.0,2,meera.singh75@eduguard.edu
+EDU1076,Meera Chopra,Computer Science,92.7,8.65,81.8,0.0,4,meera.chopra76@eduguard.edu
+EDU1077,Kabir Verma,AI & Data Science,93.9,9.19,90.4,0.0,4,kabir.verma77@eduguard.edu
+EDU1078,Alia Gupta,Computer Science,39.0,3.65,21.0,0.0,2,alia.gupta78@eduguard.edu
+EDU1079,Siddharth Malhotra,Information Technology,75.2,6.75,70.0,1200.0,8,siddharth.malhotra79@eduguard.edu
+EDU1080,Rhea Patel,AI & Data Science,87.5,9.33,97.3,0.0,4,rhea.patel80@eduguard.edu
+EDU1081,Anika Sharma,AI & Data Science,68.3,7.13,60.8,500.0,4,anika.sharma81@eduguard.edu
+EDU1082,Ananya Nair,AI & Data Science,67.6,6.07,61.5,4164.0,4,ananya.nair82@eduguard.edu
+EDU1083,Alia Kulkarni,AI & Data Science,74.0,7.43,69.6,500.0,8,alia.kulkarni83@eduguard.edu
+EDU1084,Meera Bose,Computer Science,88.5,8.04,81.3,0.0,4,meera.bose84@eduguard.edu
+EDU1085,Aditya Verma,AI & Data Science,70.7,6.74,64.8,0.0,4,aditya.verma85@eduguard.edu
+EDU1086,Rohan Sharma,Electronics & Comm.,73.8,7.39,69.2,0.0,4,rohan.sharma86@eduguard.edu
+EDU1087,Tanvi Reddy,AI & Data Science,47.4,3.6,33.4,4800.0,6,tanvi.reddy87@eduguard.edu
+EDU1088,Neha Singh,Computer Science,95.6,9.51,90.7,0.0,4,neha.singh88@eduguard.edu
+EDU1089,Nikhil Chopra,AI & Data Science,95.5,8.48,91.4,0.0,6,nikhil.chopra89@eduguard.edu
+EDU1090,Meera Nair,AI & Data Science,87.3,9.4,76.3,0.0,8,meera.nair90@eduguard.edu
+EDU1091,Neha Chopra,Mechanical Engineering,85.5,8.26,80.4,0.0,2,neha.chopra91@eduguard.edu
+EDU1092,Aarav Mehta,AI & Data Science,90.3,9.46,76.2,0.0,2,aarav.mehta92@eduguard.edu
+EDU1093,Ishaan Kulkarni,Computer Science,73.6,6.57,62.3,6492.0,2,ishaan.kulkarni93@eduguard.edu
+EDU1094,Siddharth Chopra,Computer Science,75.0,7.21,65.0,500.0,4,siddharth.chopra94@eduguard.edu
+EDU1095,Rohan Sharma,AI & Data Science,70.1,6.17,74.8,0.0,4,rohan.sharma95@eduguard.edu
+EDU1096,Aditya Singh,Electronics & Comm.,82.7,8.61,94.2,0.0,8,aditya.singh96@eduguard.edu
+EDU1097,Pooja Joshi,Mechanical Engineering,35.5,3.93,24.7,4800.0,4,pooja.joshi97@eduguard.edu
+EDU1098,Tanvi Malhotra,Information Technology,95.9,8.05,93.4,0.0,6,tanvi.malhotra98@eduguard.edu
+EDU1099,Aarav Sharma,AI & Data Science,87.8,9.43,78.7,0.0,2,aarav.sharma99@eduguard.edu
+EDU1100,Siddharth Gupta,AI & Data Science,82.4,6.39,57.4,500.0,4,siddharth.gupta100@eduguard.edu
+EDU1101,Ishaan Patel,Computer Science,86.5,9.12,75.3,0.0,2,ishaan.patel101@eduguard.edu
+EDU1102,Karthik Chopra,Information Technology,82.1,8.68,94.8,0.0,6,karthik.chopra102@eduguard.edu
+EDU1103,Tanvi Bose,Computer Science,88.4,9.11,85.4,0.0,2,tanvi.bose103@eduguard.edu
+EDU1104,Alia Sharma,Computer Science,68.8,7.16,66.0,1200.0,4,alia.sharma104@eduguard.edu
+EDU1105,Gaurav Nair,Information Technology,86.1,8.88,76.6,0.0,6,gaurav.nair105@eduguard.edu
+EDU1106,Vikram Reddy,Information Technology,87.1,7.92,83.1,0.0,4,vikram.reddy106@eduguard.edu
+EDU1107,Diya Deshmukh,Computer Science,90.8,8.06,75.4,0.0,4,diya.deshmukh107@eduguard.edu
+EDU1108,Alia Kulkarni,Information Technology,36.8,5.43,35.8,0.0,4,alia.kulkarni108@eduguard.edu
+EDU1109,Ananya Deshmukh,Electronics & Comm.,82.5,7.24,62.3,0.0,4,ananya.deshmukh109@eduguard.edu
+EDU1110,Varun Joshi,Computer Science,35.7,4.16,27.8,4800.0,4,varun.joshi110@eduguard.edu
+EDU1111,Aarav Joshi,Computer Science,76.2,6.18,66.1,0.0,6,aarav.joshi111@eduguard.edu
+EDU1112,Ananya Kulkarni,Information Technology,55.2,4.76,21.9,1500.0,4,ananya.kulkarni112@eduguard.edu
+EDU1113,Dev Sharma,Information Technology,53.1,3.52,28.2,0.0,2,dev.sharma113@eduguard.edu
+EDU1114,Nikhil Patel,Electronics & Comm.,74.3,7.47,57.9,1200.0,4,nikhil.patel114@eduguard.edu
+EDU1115,Sneha Malhotra,Electronics & Comm.,55.7,5.29,39.0,3200.0,2,sneha.malhotra115@eduguard.edu
+EDU1116,Pooja Patel,Computer Science,61.6,4.81,42.3,0.0,4,pooja.patel116@eduguard.edu
+EDU1117,Tanvi Reddy,Computer Science,52.2,4.25,22.1,3200.0,8,tanvi.reddy117@eduguard.edu
+EDU1118,Aditya Patel,AI & Data Science,87.6,8.81,93.6,0.0,4,aditya.patel118@eduguard.edu
+EDU1119,Dev Patel,Computer Science,97.7,7.85,87.6,0.0,6,dev.patel119@eduguard.edu
+EDU1120,Meera Chopra,Information Technology,71.7,7.57,62.8,500.0,6,meera.chopra120@eduguard.edu
