@@ -7,7 +7,7 @@ evaluates class probabilities, generates explainable factors, and suggests inter
 import streamlit as st
 import pandas as pd
 from ml.predict import predict_student
-from backend.student_service import get_all_students_with_predictions, add_student
+from backend.student_service import get_all_students_with_predictions, add_student, update_student
 from utils.charts import create_probability_breakdown_bar
 from utils.helpers import get_risk_badge_html, format_currency, render_banner
 
@@ -18,25 +18,24 @@ def render_predictor_view():
     st.markdown(
         render_banner(
             title="Single Student Dropout Risk Predictor",
-            subtitle="Real-time Scikit-Learn Random Forest inference with factor diagnostics & tailored advisories",
+            subtitle="Real-time Random Forest inference with factor diagnostics & tailored advisories",
             role_badge=f"Logged as {user.get('full_name', 'Faculty/Counselor')}"
         ),
         unsafe_allow_html=True
     )
     
-    # Mode selector: Test custom profile vs Load existing student
+    # Mode selector
     mode = st.radio(
-        "Prediction Mode",
+        "Evaluation Source",
         ["Custom Scenario / Prospective Student", "Load Existing Enrolled Student"],
         horizontal=True
     )
     
-    # Default values
     default_id = "NEW_STU"
     default_name = "Candidate Student"
     default_dept = "Computer Science"
     default_att = 75.0
-    default_cgpa = 6.8
+    default_cgpa = 6.80
     default_lms = 60.0
     default_fee = 0.0
     
@@ -58,9 +57,9 @@ def render_predictor_view():
                 
     st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
     
-    # Prediction Input Form
+    # Input Form
     with st.form("single_predictor_form"):
-        st.subheader("Student Academic & Financial Parameters")
+        st.subheader("Student Identity & Evaluation Parameters")
         
         info_c1, info_c2, info_c3 = st.columns(3)
         with info_c1:
@@ -74,39 +73,38 @@ def render_predictor_view():
                 index=0
             )
             
-        st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
-        st.write("**Core Risk Evaluation Features (Used by Random Forest Model):**")
+        st.markdown("---")
+        st.write("**Machine Learning Feature Dimensions:**")
         
         param_c1, param_c2 = st.columns(2)
         with param_c1:
             att_val = st.slider(
-                "Attendance Percentage (0% - 100%)",
+                "Attendance Percentage (%)",
                 min_value=0.0, max_value=100.0, value=default_att, step=0.5,
-                help="Minimum regulatory institutional requirement is 75%."
+                help="Regulatory institutional threshold: 75%"
             )
             cgpa_val = st.slider(
-                "Cumulative GPA (0.00 - 10.00)",
+                "Cumulative GPA (0.00 – 10.00)",
                 min_value=0.0, max_value=10.0, value=default_cgpa, step=0.05,
-                help="Academic probation threshold is below 5.0."
+                help="Academic probation threshold: 5.0"
             )
         with param_c2:
             lms_val = st.slider(
-                "LMS Platform Activity Score (0% - 100%)",
+                "LMS Activity Score (%)",
                 min_value=0.0, max_value=100.0, value=default_lms, step=0.5,
-                help="Digital course engagement, online assignment submissions and forum participation."
+                help="Online portal logins, quiz completion and digital assignment submissions"
             )
             fee_val = st.number_input(
                 "Pending Tuition & Fee Arrears ($)",
                 min_value=0.0, max_value=25000.0, value=default_fee, step=100.0,
-                help="Unsettled institutional fee dues causing administrative or financial strain."
+                help="Outstanding institutional fees causing financial hold"
             )
             
-        st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
-        predict_btn = st.form_submit_button("🔮 Predict Dropout Risk via Random Forest", use_container_width=True)
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+        predict_btn = st.form_submit_button("🔮 Predict Dropout Risk via Random Forest", use_container_width=True, type="primary")
         
     # Execute Prediction and Display Results
     if predict_btn or "last_prediction" in st.session_state:
-        # If user just submitted or we have a stored prediction
         if predict_btn:
             result = predict_student(att_val, cgpa_val, lms_val, fee_val)
             result["student_id"] = stu_id_val
@@ -127,20 +125,20 @@ def render_predictor_view():
         risk_score = result["risk_score"]
         probs = result["probabilities"]
         
-        # Result Card Container
+        # Result Showcase Cards
         res_col1, res_col2 = st.columns([1.2, 1.8])
         
         with res_col1:
             st.markdown(f"""
             <div style="
-                background: white;
+                background: #FFFFFF;
                 border: 1px solid #E2E8F0;
                 border-radius: 14px;
-                padding: 24px;
+                padding: 24px 20px;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
                 text-align: center;
             ">
-                <div style="font-size: 0.85rem; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.05em;">
+                <div style="font-size: 0.82rem; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.06em;">
                     PREDICTED ATTRITION RISK
                 </div>
                 <div style="margin: 14px 0;">
@@ -152,101 +150,60 @@ def render_predictor_view():
                 <div style="font-size: 0.82rem; color: #64748B; margin-top: 6px;">
                     Continuous Dropout Risk Index
                 </div>
-                <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid #F1F5F9; font-size: 0.85rem; color: #334155;">
+                <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid #F1F5F9; font-size: 0.88rem; color: #334155;">
                     <b>{result['student_name']}</b> ({result['student_id']})<br>
-                    <span style="color: #64748B;">{result['department']}</span>
+                    <span style="color: #64748B; font-size: 0.82rem;">{result['department']}</span>
                 </div>
             </div>
             """, unsafe_allow_html=True)
             
         with res_col2:
-            st.markdown("""
-            <div class="eduguard-card" style="margin-bottom: 0;">
-                <div style="font-weight: 700; font-size: 1rem; color: #0F172A; margin-bottom: 4px;">
-                    📊 Multiclass Probability Breakdown
-                </div>
-                <div style="font-size: 0.82rem; color: #64748B; margin-bottom: 8px;">
-                    Confidence distribution evaluated across the Random Forest decision forest
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-            
+            st.subheader("📊 Multiclass Probability Breakdown")
+            st.caption("Model confidence distribution evaluated across the 160 Random Forest decision trees")
             p_fig = create_probability_breakdown_bar(probs)
             st.plotly_chart(p_fig, use_container_width=True)
             
-            # Numeric Class Probabilities
             p1, p2, p3 = st.columns(3)
             p1.metric("Low Risk Prob.", f"{probs.get('Low Risk', 0.0)*100:.1f}%")
             p2.metric("Medium Risk Prob.", f"{probs.get('Medium Risk', 0.0)*100:.1f}%")
             p3.metric("High Risk Prob.", f"{probs.get('High Risk', 0.0)*100:.1f}%")
             
-        st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 14px;'></div>", unsafe_allow_html=True)
         
-        # Explainable Factors & Recommended Intervention Section
+        # Contributing Factors & Advisory
         fact_col1, fact_col2 = st.columns(2)
-        
         with fact_col1:
-            st.markdown("""
-            <div class="eduguard-card">
-                <div style="font-weight: 700; font-size: 1.05rem; color: #0F172A; margin-bottom: 12px;">
-                    🔍 Primary Contributing Risk Factors
-                </div>
-            """, unsafe_allow_html=True)
-            
+            st.subheader("🔍 Primary Contributing Factors")
             for f in result["factors"]:
-                icon = "🔴" if f["type"] == "danger" else ("🟡" if f["type"] == "warning" else "🟢")
-                bg_tint = "#FEF2F2" if f["type"] == "danger" else ("#FFFBEB" if f["type"] == "warning" else "#ECFDF5")
-                border_tint = "#FECACA" if f["type"] == "danger" else ("#FDE68A" if f["type"] == "warning" else "#A7F3D0")
-                text_tint = "#991B1B" if f["type"] == "danger" else ("#92400E" if f["type"] == "warning" else "#065F46")
-                
-                st.markdown(f"""
-                <div style="
-                    background: {bg_tint};
-                    border: 1px solid {border_tint};
-                    border-radius: 8px;
-                    padding: 10px 14px;
-                    margin-bottom: 8px;
-                    font-size: 0.86rem;
-                    color: {text_tint};
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                ">
-                    <span>{icon}</span>
-                    <div><b>{f['metric']}:</b> {f['text']}</div>
-                </div>
-                """, unsafe_allow_html=True)
-                
-            st.markdown("</div>", unsafe_allow_html=True)
-            
+                if f["type"] == "danger":
+                    st.error(f"**{f['metric']}:** {f['text']}")
+                elif f["type"] == "warning":
+                    st.warning(f"**{f['metric']}:** {f['text']}")
+                else:
+                    st.success(f"**{f['metric']}:** {f['text']}")
+                    
         with fact_col2:
+            st.subheader("🛡️ AI-Recommended Early Intervention Plan")
             st.markdown(f"""
-            <div class="eduguard-card">
-                <div style="font-weight: 700; font-size: 1.05rem; color: #0F172A; margin-bottom: 12px;">
-                    🛡️ AI-Recommended Early Intervention Plan
-                </div>
-                <div style="
-                    background: #EFF6FF;
-                    border-left: 4px solid #2563EB;
-                    border-radius: 8px;
-                    padding: 16px;
-                    font-size: 0.90rem;
-                    color: #1E3A8A;
-                    line-height: 1.5;
-                    margin-bottom: 18px;
-                ">
-                    {result['advisory']}
-                </div>
-                <div style="font-size: 0.82rem; color: #64748B;">
-                    Recommended Intervention Type: <b>{('Academic Counseling' if result['cgpa'] < 6.0 else ('Attendance Improvement' if result['attendance'] < 70 else ('Financial Assistance' if result['fee_dues'] > 1500 else 'Academic Mentoring')))}</b>
-                </div>
+            <div style="
+                background: #EFF6FF;
+                border-left: 4px solid #2563EB;
+                border-radius: 8px;
+                padding: 18px;
+                font-size: 0.92rem;
+                color: #1E3A8A;
+                line-height: 1.5;
+            ">
+                <b>Action Strategy:</b><br>{result['advisory']}
             </div>
             """, unsafe_allow_html=True)
             
-        # Post-Prediction Actions: Save to DB or Launch Intervention Case
-        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+            rec_type = 'Academic Counseling' if result['cgpa'] < 6.0 else ('Attendance Improvement' if result['attendance'] < 70 else ('Financial Assistance' if result['fee_dues'] > 1500 else 'Academic Mentoring'))
+            st.caption(f"Recommended Intervention Category: **{rec_type}**")
+            
+        # Post-Prediction Actions
+        st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
         btn_c1, btn_c2 = st.columns(2)
-        
         with btn_c1:
             if st.button("💾 Enroll / Update in Student Database", use_container_width=True):
                 save_data = {
@@ -262,13 +219,11 @@ def render_predictor_view():
                 }
                 success, msg = add_student(save_data)
                 if success:
-                    st.success(f"Success! {msg}")
+                    st.success(f"✓ {msg}")
                 else:
-                    # Try update if already exists
-                    from backend.student_service import update_student
                     succ_up, msg_up = update_student(result["student_id"], save_data)
                     if succ_up:
-                        st.success(f"Success! Record refreshed: {msg_up}")
+                        st.success(f"✓ Refreshed: {msg_up}")
                     else:
                         st.error(msg)
                         

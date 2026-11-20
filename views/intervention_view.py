@@ -36,59 +36,61 @@ def render_intervention_view():
     k_col1, k_col2, k_col3, k_col4 = st.columns(4)
     with k_col1:
         st.markdown(
-            render_kpi_card("Total Interventions", str(kpi_dict["total"]), "All-time recorded cases", "blue"),
+            render_kpi_card("Total Interventions", str(kpi_dict["total"]), "All recorded cases", "blue"),
             unsafe_allow_html=True
         )
     with k_col2:
         st.markdown(
-            render_kpi_card("In Progress", str(kpi_dict["in_progress"]), "Active outreach cases", "teal"),
+            render_kpi_card("Active In Progress", str(kpi_dict["in_progress"]), "Ongoing counselor outreach", "teal"),
             unsafe_allow_html=True
         )
     with k_col3:
         st.markdown(
-            render_kpi_card("Pending Initiation", str(kpi_dict["pending"]), "Scheduled first meetings", "orange"),
+            render_kpi_card("Scheduled Pending", str(kpi_dict["pending"]), "Upcoming initial consultations", "orange"),
             unsafe_allow_html=True
         )
     with k_col4:
         st.markdown(
-            render_kpi_card("Completed Cases", str(kpi_dict["completed"]), "Successfully closed cases", "green"),
+            render_kpi_card("Completed Cases", str(kpi_dict["completed"]), "Successfully resolved cases", "green"),
             unsafe_allow_html=True
         )
         
-    st.markdown("<div style='height: 18px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
     
-    # Priority Queue Check: High-Risk Students Awaiting Action
+    # High-Risk Urgent Queue Check
     urgent_students = get_high_risk_students_requiring_intervention()
     unaddressed_high_risk = [s for s in urgent_students if s.get("intervention_count", 0) == 0]
     
     if unaddressed_high_risk:
         st.markdown(f"""
         <div style="
-            background: #FEF2F2;
-            border: 1px solid #FECACA;
+            background: linear-gradient(90deg, #FEF2F2 0%, #FFF1F2 100%);
             border-left: 5px solid #EF4444;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 14px 18px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.08);
         ">
             <div>
-                <span style="font-weight: 700; color: #991B1B;">⚠️ Urgent High-Risk Queue:</span>
+                <span style="font-weight: 700; color: #991B1B;">⚠️ Priority Alert:</span>
                 <span style="color: #7F1D1D; font-size: 0.90rem; margin-left: 6px;">
-                    {len(unaddressed_high_risk)} critical students currently have no active intervention logged.
+                    <b>{len(unaddressed_high_risk)}</b> High-Risk students currently have no active retention intervention logged.
                 </span>
             </div>
-            <span style="background: #FEE2E2; color: #991B1B; font-size: 0.78rem; font-weight: 700; padding: 4px 10px; border-radius: 6px;">
-                Action Mandated
+            <span style="background: #FEE2E2; color: #991B1B; font-size: 0.78rem; font-weight: 700; padding: 4px 12px; border-radius: 20px;">
+                Outreach Mandated
             </span>
         </div>
         """, unsafe_allow_html=True)
         
-    # Main Tabs: Case Log History | Log New Intervention | High-Risk Queue
+    # Main Tabs
     tab1, tab2, tab3 = st.tabs([
-        "📂 Active Cases & History Log", 
+        "📂 Active Cases & Log History", 
         "➕ Initiate New Intervention Case", 
         "🚨 High-Risk Priority Queue"
     ])
@@ -97,11 +99,9 @@ def render_intervention_view():
     with tab1:
         st.subheader("Intervention History & Case Workflow")
         
-        fil_c1, fil_c2 = st.columns([1.5, 3])
+        fil_c1, _ = st.columns([1.8, 3])
         with fil_c1:
-            status_filter = st.selectbox("Filter by Status", ["All", "Pending", "In Progress", "Completed"])
-        with fil_c2:
-            st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
+            status_filter = st.selectbox("Filter Casework by Status", ["All", "Pending", "In Progress", "Completed"])
             
         interventions = get_interventions(status_filter=status_filter)
         
@@ -122,34 +122,28 @@ def render_intervention_view():
                 with st.expander(f"Case #{case_id}: {stu_name} ({stu_id}) — {inv_type} [{status}]", expanded=(status != "Completed")):
                     card_c1, card_c2 = st.columns([2.5, 1.5])
                     with card_c1:
-                        st.markdown(f"**Student:** {stu_name} ({stu_id}) | **Department:** {item.get('department', 'N/A')}")
+                        st.write(f"**Student:** {stu_name} (`{stu_id}`) | **Department:** {item.get('department', 'N/A')}")
                         st.markdown(f"**Classification:** {get_risk_badge_html(risk_lvl)}", unsafe_allow_html=True)
-                        st.markdown(f"**Recommended Advisory:**\n> {item['advisory']}")
+                        st.info(f"**Action Advisory:**\n{item['advisory']}")
                         
                         if item.get("notes"):
-                            st.markdown(f"**Counselor Case Notes:**\n```\n{item['notes']}\n```")
+                            st.write(f"**Counselor Notes:**\n```\n{item['notes']}\n```")
                             
                     with card_c2:
-                        st.markdown(f"""
-                        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 12px; border-radius: 8px; font-size: 0.85rem;">
-                            <div><b>Current Status:</b> {get_status_badge_html(status)}</div>
-                            <div style="margin-top: 8px;"><b>Assigned To:</b> {counselor}</div>
-                            <div style="margin-top: 4px;"><b>Follow-up Date:</b> {follow_up}</div>
-                            <div style="margin-top: 4px; color: #64748B;"><b>Initiated:</b> {date_logged}</div>
-                        </div>
-                        """, unsafe_allow_html=True)
+                        st.write(f"**Current Status:** {status}")
+                        st.write(f"**Assigned Counselor:** {counselor}")
+                        st.write(f"**Follow-up Date:** {follow_up}")
+                        st.caption(f"Logged: {date_logged}")
                         
-                        st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
-                        
-                        # Form to update status
+                        # In-place status updater
                         with st.form(f"update_status_form_{case_id}"):
                             new_status_val = st.selectbox(
                                 "Update Action Status",
                                 ACTION_STATUSES,
                                 index=ACTION_STATUSES.index(status) if status in ACTION_STATUSES else 0
                             )
-                            additional_note = st.text_area("Add Follow-up Note / Outcome", height=70, placeholder="e.g. Student attended counseling; attendance improved to 72%...")
-                            submit_up = st.form_submit_button("Update Case Status", use_container_width=True)
+                            additional_note = st.text_area("Add Progress Note", height=65, placeholder="e.g. Student attended counseling session...")
+                            submit_up = st.form_submit_button("Save Status Update", use_container_width=True)
                             
                             if submit_up:
                                 succ, msg = update_intervention_status(case_id, new_status_val, additional_note)
@@ -162,15 +156,13 @@ def render_intervention_view():
     # ---------------- TAB 2: INITIATE NEW INTERVENTION ----------------
     with tab2:
         st.subheader("➕ Launch Structured Student Early Intervention")
-        st.markdown("Assign a faculty mentor or professional counselor, set target follow-up milestones, and generate tailored remedial advisories.")
+        st.caption("Assign a counselor or faculty mentor, set milestone follow-ups, and log actionable retention advisories.")
         
         all_students_df = get_all_students_with_predictions()
         
-        # Check if pre-filled from single predictor or directory
         prefill_id = st.session_state.pop("prefill_intervention_student_id", None)
         prefill_advisory = st.session_state.pop("prefill_intervention_advisory", None)
         
-        # Build student select list
         # Order high risk first
         all_students_df["sort_key"] = all_students_df["risk_level"].map({"High Risk": 0, "Medium Risk": 1, "Low Risk": 2})
         sorted_students = all_students_df.sort_values(["sort_key", "risk_score"], ascending=[True, False])
@@ -187,7 +179,6 @@ def render_intervention_view():
         selected_stu_str = st.selectbox("Select Student Requiring Intervention:", stu_options, index=default_index)
         sel_student_id = selected_stu_str.split(" - ")[0] if selected_stu_str else None
         
-        # Fetch selected student details
         if sel_student_id:
             profile = get_student_profile(sel_student_id)
             if profile:
@@ -197,10 +188,9 @@ def render_intervention_view():
                 s_c3.metric("CGPA", f"{float(profile.get('cgpa', 0)):.2f}")
                 s_c4.metric("Pending Dues", f"${float(profile.get('fee_dues', 0)):,.0f}")
                 
-                # Auto-generate advisory if none prefilled
                 auto_advisory = prefill_advisory or (
                     f"Immediate intervention required for {profile.get('student_name')}. "
-                    f"Key focus: {profile.get('contributing_factors', 'Academic & attendance recovery plan.')}"
+                    f"Focus areas: {profile.get('contributing_factors', 'Academic & attendance recovery plan.')}"
                 )
                 
                 with st.form("new_intervention_form", clear_on_submit=True):
@@ -215,11 +205,11 @@ def render_intervention_view():
                     with ic2:
                         default_date = date.today() + timedelta(days=7)
                         follow_up_val = st.date_input("Scheduled Follow-up Date", value=default_date)
-                        initial_notes_val = st.text_area("Initial Counselor Notes", placeholder="e.g. Initial counseling session scheduled. Parent notified via email.")
+                        initial_notes_val = st.text_area("Initial Counselor Case Notes", placeholder="e.g. Initial counseling session scheduled. Parent notified.")
                         
-                    advisory_val = st.text_area("Advisory & Remedial Action Strategy", value=auto_advisory, height=90)
+                    advisory_val = st.text_area("Advisory & Remedial Action Strategy", value=auto_advisory, height=85)
                     
-                    submit_inv = st.form_submit_button("🚀 Submit & Log Intervention Record", use_container_width=True)
+                    submit_inv = st.form_submit_button("🚀 Submit & Log Intervention Record", use_container_width=True, type="primary")
                     if submit_inv:
                         success, msg = add_intervention(
                             student_id=sel_student_id,
@@ -240,10 +230,10 @@ def render_intervention_view():
     # ---------------- TAB 3: HIGH RISK PRIORITY QUEUE ----------------
     with tab3:
         st.subheader("🚨 Prioritized High-Risk Students Queue")
-        st.markdown("All students evaluated as **High Risk** by the Random Forest model, sorted by critical attrition probability.")
+        st.caption("All students evaluated as High Risk by the Random Forest model, sorted by highest attrition probability.")
         
         if not urgent_students:
-            st.success("🎉 Great news! Zero students currently classified as High Risk.")
+            st.success("🎉 Zero students currently classified as High Risk.")
         else:
             urgent_table = pd.DataFrame([
                 {
@@ -261,6 +251,3 @@ def render_intervention_view():
             ])
             
             st.dataframe(urgent_table, use_container_width=True)
-            
-            st.markdown("---")
-            st.markdown("💡 **Tip:** To create an intervention for any student in the queue, switch to the **'Initiate New Intervention Case'** tab and select their name.")

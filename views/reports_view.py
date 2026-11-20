@@ -208,32 +208,16 @@ def render_reports_view():
         # Confusion Matrix Heatmap & Feature Importances
         audit_c1, audit_c2 = st.columns(2)
         with audit_c1:
-            st.markdown("""
-            <div class="eduguard-card" style="margin-bottom: 0;">
-                <div style="font-weight: 700; font-size: 1rem; color: #0F172A; margin-bottom: 4px;">
-                    🔲 Test Set Confusion Matrix
-                </div>
-                <div style="font-size: 0.82rem; color: #64748B; margin-bottom: 8px;">
-                    True labels vs Predicted labels across 3 risk classes
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.subheader("🔲 Test Set Confusion Matrix")
+            st.caption("True labels vs Predicted labels across 3 risk classes on stratified test set")
             cm = metrics.get("confusion_matrix", [[100, 5, 0], [4, 90, 6], [0, 5, 80]])
             classes = meta.get("classes", ["Low Risk", "Medium Risk", "High Risk"])
             cm_fig = create_confusion_matrix_heatmap(cm, classes)
             st.plotly_chart(cm_fig, use_container_width=True)
             
         with audit_c2:
-            st.markdown("""
-            <div class="eduguard-card" style="margin-bottom: 0;">
-                <div style="font-weight: 700; font-size: 1rem; color: #0F172A; margin-bottom: 4px;">
-                    📊 Global Feature Importances
-                </div>
-                <div style="font-size: 0.82rem; color: #64748B; margin-bottom: 8px;">
-                    Random Forest Gini-importance weights
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.subheader("📊 Global Feature Importances")
+            st.caption("Random Forest Gini-importance weights across all decision trees")
             fi_dict = get_feature_importances()
             fi_fig = create_feature_importance_bar(fi_dict)
             st.plotly_chart(fi_fig, use_container_width=True)

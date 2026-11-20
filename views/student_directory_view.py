@@ -28,22 +28,22 @@ def render_student_directory_view():
         unsafe_allow_html=True
     )
     
-    # Action Toolbar: Search, Filters, Sorting
-    tb_c1, tb_c2, tb_c3, tb_c4 = st.columns([2, 1.2, 1.2, 1.2])
+    # Clean Filter Toolbar
+    tb_c1, tb_c2, tb_c3, tb_c4 = st.columns([2.2, 1.2, 1.2, 1.4])
     with tb_c1:
-        search_query = st.text_input("🔍 Search Student", placeholder="Search by Student ID, Name, or Email...")
+        search_query = st.text_input("Search Students", placeholder="🔍 Search by Student ID, Name, or Email...", label_visibility="collapsed")
     with tb_c2:
-        risk_filter = st.selectbox("Risk Level", ["All", "High Risk", "Medium Risk", "Low Risk"])
+        risk_filter = st.selectbox("Filter Risk", ["All", "High Risk", "Medium Risk", "Low Risk"], label_visibility="collapsed")
     with tb_c3:
         dept_options = ["All"] + get_all_departments()
-        dept_filter = st.selectbox("Department", dept_options)
+        dept_filter = st.selectbox("Filter Department", dept_options, label_visibility="collapsed")
     with tb_c4:
         sort_choice = st.selectbox(
-            "Sort Records By",
-            ["Highest Risk Score", "Lowest Risk Score", "Lowest Attendance", "Lowest CGPA", "Highest Fee Dues", "Student Name"]
+            "Sort Order",
+            ["Highest Risk Score", "Lowest Risk Score", "Lowest Attendance", "Lowest CGPA", "Highest Fee Dues", "Student Name"],
+            label_visibility="collapsed"
         )
         
-    # Map sort choice
     sort_mapping = {
         "Highest Risk Score": ("risk_score", False),
         "Lowest Risk Score": ("risk_score", True),
@@ -63,9 +63,9 @@ def render_student_directory_view():
         sort_ascending=sort_asc
     )
     
-    # Action buttons: Add Student, Batch Upload, Export
-    action_c1, action_c2, action_c3 = st.columns([1.5, 1.5, 3])
-    with action_c1:
+    # Export bar & record count
+    exp_c1, exp_c2, exp_c3 = st.columns([1.5, 1.5, 3])
+    with exp_c1:
         csv_bytes = df.to_csv(index=False).encode('utf-8')
         st.download_button(
             label="📥 Export CSV",
@@ -74,26 +74,26 @@ def render_student_directory_view():
             mime="text/csv",
             use_container_width=True
         )
-    with action_c2:
+    with exp_c2:
         kpis = get_institutional_kpis()
         excel_bytes = generate_excel_report(kpis, df)
         st.download_button(
             label="📊 Export Excel (.xlsx)",
             data=excel_bytes,
-            file_name=f"eduguard_students_register.xlsx",
+            file_name="eduguard_students_register.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             use_container_width=True
         )
-    with action_c3:
+    with exp_c3:
         st.markdown(f"""
         <div style="text-align: right; padding-top: 8px; font-size: 0.88rem; color: #64748B;">
             Showing <b>{len(df)}</b> student records matching criteria
         </div>
         """, unsafe_allow_html=True)
         
-    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
     
-    # Main Directory Tabs: Register View | Add Student | Batch Upload (Admin)
+    # Main Directory Tabs
     tab1, tab2, tab3 = st.tabs(["📋 Student Register Table", "➕ Enroll New Student", "📁 Batch CSV Upload (Admin)"])
     
     # ---------------- TAB 1: DATA TABLE & ACTIONS ----------------
@@ -101,7 +101,6 @@ def render_student_directory_view():
         if df.empty:
             st.info("No student records match the active search or filter criteria.")
         else:
-            # Prepare formatted display table
             display_table = pd.DataFrame({
                 "Student ID": df["student_id"],
                 "Student Name": df["student_name"],
@@ -117,14 +116,14 @@ def render_student_directory_view():
             st.dataframe(
                 display_table,
                 use_container_width=True,
-                height=min(450, 45 + len(display_table) * 35)
+                height=min(420, 50 + len(display_table) * 35)
             )
             
-            # Interactive Action Selector
+            # Interactive Profile Inspector Panel
             st.markdown("---")
             st.subheader("🔍 Student Profile Diagnostics & Record Actions")
             
-            sel_col1, sel_col2 = st.columns([2.5, 1.5])
+            sel_col1, _ = st.columns([2.8, 1])
             with sel_col1:
                 student_options = [
                     f"{r['student_id']} - {r['student_name']} ({r['risk_level']})" 
@@ -137,23 +136,17 @@ def render_student_directory_view():
             if selected_id:
                 student_profile = get_student_profile(selected_id)
                 if student_profile:
-                    # Summary card
-                    p_col1, p_col2, p_col3, p_col4 = st.columns(4)
-                    p_col1.metric("Student Name", student_profile.get("student_name", "N/A"))
-                    p_col2.metric("Department", student_profile.get("department", "N/A"))
-                    p_col3.metric("Current Semester", f"Sem {student_profile.get('semester', 4)}")
-                    
                     risk_lvl = student_profile.get("risk_level", "Medium Risk")
                     risk_scr = student_profile.get("risk_score", 50.0)
-                    p_col4.markdown(f"""
-                    <div style="background: white; border: 1px solid #E2E8F0; padding: 10px 14px; border-radius: 10px;">
-                        <div style="font-size: 0.75rem; color: #64748B; font-weight: 600;">RISK CLASSIFICATION</div>
-                        <div style="margin-top: 4px;">{get_risk_badge_html(risk_lvl)}</div>
-                        <div style="font-size: 0.85rem; font-weight: 700; color: #0F172A; margin-top: 4px;">Score: {risk_scr:.1f} / 100</div>
-                    </div>
-                    """, unsafe_allow_html=True)
                     
-                    # Diagnostic Factors Progress Bars
+                    # Clean Metric Summary
+                    p_c1, p_c2, p_c3, p_c4 = st.columns(4)
+                    p_c1.metric("Student Name", student_profile.get("student_name", "N/A"))
+                    p_c2.metric("Department", student_profile.get("department", "N/A"))
+                    p_c3.metric("Current Semester", f"Sem {student_profile.get('semester', 4)}")
+                    p_c4.metric("Risk Classification", f"{risk_scr:.1f}/100", delta=risk_lvl, delta_color="inverse")
+                    
+                    # Factor Diagnostic Progress Indicators
                     diag_c1, diag_c2 = st.columns(2)
                     with diag_c1:
                         att_val = float(student_profile.get("attendance", 0))
@@ -161,24 +154,33 @@ def render_student_directory_view():
                         st.progress(min(100, int(att_val)) / 100)
                         
                         cgpa_val = float(student_profile.get("cgpa", 0))
-                        st.write(f"**Cumulative GPA:** {cgpa_val:.2f} / 10.0 (Probation Threshold: 5.0)")
+                        st.write(f"**Cumulative GPA:** {cgpa_val:.2f} / 10.0 (Probation Cutoff: 5.0)")
                         st.progress(min(100, int(cgpa_val * 10)) / 100)
                         
                     with diag_c2:
                         lms_val = float(student_profile.get("lms_activity", 0))
-                        st.write(f"**LMS Platform Engagement:** {lms_val:.1f}%")
+                        st.write(f"**LMS Platform Activity:** {lms_val:.1f}%")
                         st.progress(min(100, int(lms_val)) / 100)
                         
                         fee_val = float(student_profile.get("fee_dues", 0))
-                        fee_status = "⚠️ Outstanding Tuition Arrears" if fee_val > 0 else "✓ Cleared (No Dues)"
-                        st.write(f"**Tuition Status:** {format_currency(fee_val)} ({fee_status})")
+                        st.write(f"**Pending Fee Dues:** {format_currency(fee_val)}")
                         st.progress(min(1.0, fee_val / 5000.0) if fee_val > 0 else 0.0)
                         
-                    # Model Diagnostic Summary
-                    st.info(f"💡 **AI Diagnostic Factors:** {student_profile.get('contributing_factors', 'Stable performance profile.')}")
+                    st.info(f"💡 **AI Diagnostic Summary:** {student_profile.get('contributing_factors', 'Stable performance profile.')}")
                     
-                    # Action Sub-Sections: Edit Record / Delete / Quick Intervene
-                    with st.expander("✏️ Edit Student Record & Re-evaluate Risk"):
+                    # Action Buttons Row: Launch Intervention / Quick Edit / Delete
+                    act_c1, act_c2 = st.columns(2)
+                    with act_c1:
+                        if st.button("🛡️ Launch Early Intervention Case for this Student", key=f"inv_btn_{selected_id}", use_container_width=True, type="primary"):
+                            st.session_state["prefill_intervention_student_id"] = selected_id
+                            st.session_state["current_page"] = "Intervention Action Center"
+                            st.rerun()
+                            
+                    with act_c2:
+                        pass # Spacing
+                        
+                    # Edit Record Form
+                    with st.expander("✏️ Modify Student Parameters & Recompute ML Risk"):
                         with st.form(f"edit_form_{selected_id}"):
                             ec1, ec2 = st.columns(2)
                             with ec1:
@@ -216,12 +218,12 @@ def render_student_directory_view():
                                 else:
                                     st.error(msg)
                                     
-                    # Admin Delete Record
+                    # Admin Delete Safeguard
                     if is_admin:
-                        with st.expander("🗑️ Delete Student Record (Admin Only)"):
-                            st.warning(f"Warning: Deleting student '{selected_id} - {student_profile.get('student_name')}' will also permanently delete all associated prediction results and intervention histories.")
-                            confirm_delete = st.checkbox(f"Yes, I confirm permanent deletion of {selected_id}")
-                            if st.button("Permanently Delete Student", disabled=not confirm_delete, type="primary"):
+                        with st.expander("🗑️ Permanent Record Removal (Admin Only)"):
+                            st.warning(f"Permanently remove '{selected_id} - {student_profile.get('student_name')}' and all associated logs.")
+                            confirm_del = st.checkbox(f"Confirm permanent deletion of {selected_id}")
+                            if st.button("Permanently Delete Student Record", disabled=not confirm_del, key=f"del_{selected_id}"):
                                 success, msg = delete_student(selected_id)
                                 if success:
                                     st.success(msg)
@@ -231,8 +233,8 @@ def render_student_directory_view():
                                     
     # ---------------- TAB 2: ADD NEW STUDENT ----------------
     with tab2:
-        st.subheader("➕ Enroll New Student with Real-time ML Evaluation")
-        st.markdown("Fill in the student academic and engagement metrics. The Random Forest model will evaluate risk immediately upon insertion.")
+        st.subheader("➕ Enroll New Student with Automatic ML Risk Scoring")
+        st.caption("Provide student academic parameters. The Random Forest model will evaluate attrition risk immediately upon entry.")
         
         with st.form("add_student_form", clear_on_submit=True):
             f1, f2 = st.columns(2)
@@ -249,22 +251,24 @@ def render_student_directory_view():
                 new_fee = st.number_input("Pending Tuition Dues ($)", min_value=0.0, max_value=25000.0, value=0.0, step=100.0)
                 new_phone = st.text_input("Phone Number", placeholder="+91-9876543210")
                 
-            submit_new = st.form_submit_button("🚀 Add Student & Compute Dropout Risk", use_container_width=True)
+            submit_new = st.form_submit_button("🚀 Enroll Student & Compute Dropout Risk", use_container_width=True, type="primary")
             if submit_new:
-                if not new_id or not new_name:
+                clean_id = new_id.strip().upper()
+                clean_name = new_name.strip()
+                if not clean_id or not clean_name:
                     st.error("Student ID and Full Name are mandatory fields.")
                 else:
                     new_student_data = {
-                        "student_id": new_id,
-                        "student_name": new_name,
+                        "student_id": clean_id,
+                        "student_name": clean_name,
                         "department": new_dept,
                         "semester": new_sem,
-                        "email": new_email,
+                        "email": new_email.strip(),
                         "attendance": new_att,
                         "cgpa": new_cgpa,
                         "lms_activity": new_lms,
                         "fee_dues": new_fee,
-                        "phone": new_phone
+                        "phone": new_phone.strip()
                     }
                     success, msg = add_student(new_student_data)
                     if success:
@@ -276,12 +280,11 @@ def render_student_directory_view():
     # ---------------- TAB 3: BATCH CSV UPLOAD (ADMIN) ----------------
     with tab3:
         st.subheader("📁 Batch Ingestion of Student Datasets")
-        st.markdown("Upload an institutional CSV dataset. EduGuard AI's preprocessing engine automatically standardizes headers, executes batch ML predictions, and updates SQLite storage.")
+        st.caption("Upload an institutional CSV file. The preprocessing engine normalizes columns, executes batch ML predictions, and saves to SQLite.")
         
         if not is_admin:
-            st.warning("🔒 Batch dataset ingestion is restricted to Administrator accounts. Please contact an institutional administrator.")
+            st.warning("🔒 Batch dataset ingestion is restricted to Administrator accounts.")
         else:
-            # Downloadable CSV template
             template_df = pd.DataFrame([{
                 "Student_ID": "EDU9001",
                 "Student_Name": "Sample Student",
@@ -305,10 +308,10 @@ def render_student_directory_view():
             if uploaded_file is not None:
                 try:
                     raw_df = pd.read_csv(uploaded_file)
-                    st.write(f"Uploaded **{len(raw_df)}** rows. Data preview:")
+                    st.write(f"Uploaded **{len(raw_df)}** records. Preview:")
                     st.dataframe(raw_df.head(5), use_container_width=True)
                     
-                    if st.button("⚡ Process Batch Predictions & Import to Database", use_container_width=True):
+                    if st.button("⚡ Process Batch Predictions & Import to Database", use_container_width=True, type="primary"):
                         with st.spinner("Processing ML predictions and updating SQLite tables..."):
                             ins, upd, errs = batch_upload_students(raw_df)
                             st.success(f"Batch Processing Complete! Inserted: {ins} new records | Updated: {upd} existing records.")

@@ -158,6 +158,8 @@ with st.sidebar:
     if st.button("🚪 Logout from Portal", use_container_width=True):
         st.session_state["logged_in"] = False
         st.session_state["user"] = None
+        st.session_state["login_username"] = ""
+        st.session_state["login_password"] = ""
         st.session_state["current_page"] = "Overview Dashboard"
         st.rerun()
 

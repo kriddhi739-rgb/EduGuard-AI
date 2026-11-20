@@ -1,138 +1,159 @@
 """
 EduGuard AI - Modern Authentication View
-Provides secure user login, role badges, and quick-access demo credentials.
+Provides a cohesive, responsive, eye-catching login portal with demo role selection,
+password visibility toggle, and instant error feedback.
 """
 
 import streamlit as st
 from backend.authentication import authenticate_user
 from assets.branding import get_logo_svg
 
+DEMO_ACCOUNTS = {
+    "admin": {
+        "label": "👑 Administrator",
+        "username": "admin",
+        "password": "admin123",
+        "name": "Dr. Sarah Jenkins",
+        "role_desc": "Institutional Executive & Policy Director"
+    },
+    "counselor": {
+        "label": "🎓 Counselor",
+        "username": "counselor",
+        "password": "counselor123",
+        "name": "Elena Vance, M.Ed.",
+        "role_desc": "Senior Student Retention Counselor"
+    },
+    "prof_sharma": {
+        "label": "👨‍🏫 Faculty",
+        "username": "prof_sharma",
+        "password": "faculty123",
+        "name": "Prof. Rajesh Sharma",
+        "role_desc": "CS & Data Analytics Faculty Mentor"
+    }
+}
+
 def render_login_view():
-    """Renders the login view and handles authentication state."""
+    """Renders the cohesive, modern authentication portal."""
     
-    # Outer layout with centered container
-    col_spacer_left, center_col, col_spacer_right = st.columns([1, 1.8, 1])
+    # Session state initialization for pre-filled demo credentials
+    if "login_username" not in st.session_state:
+        st.session_state["login_username"] = ""
+    if "login_password" not in st.session_state:
+        st.session_state["login_password"] = ""
+    if "show_password" not in st.session_state:
+        st.session_state["show_password"] = False
+        
+    # Responsive centered column layout
+    _, center_col, _ = st.columns([1, 2.2, 1])
     
     with center_col:
-        st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
-        
-        # Brand Card
+        # 1. Eye-Catchy Branded Header Card
         st.markdown(f"""
         <div style="
             text-align: center;
-            background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 60%, #4F46E5 100%);
-            padding: 30px 20px;
+            background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 55%, #4F46E5 100%);
+            padding: 28px 24px 22px 24px;
             border-radius: 16px 16px 0 0;
-            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.25);
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.22);
         ">
             <div style="display: flex; justify-content: center; margin-bottom: 12px;">
-                {get_logo_svg(64, 64)}
+                {get_logo_svg(58, 58)}
             </div>
-            <h1 style="color: #FFFFFF !important; font-size: 2rem; margin: 0; font-weight: 800; letter-spacing: -0.02em;">
+            <h1 style="color: #FFFFFF !important; font-size: 1.85rem; margin: 0; font-weight: 800; letter-spacing: -0.02em;">
                 EduGuard <span style="color: #93C5FD;">AI</span>
             </h1>
-            <p style="color: #DBEAFE; font-size: 0.95rem; margin-top: 6px; font-weight: 500;">
+            <p style="color: #DBEAFE; font-size: 0.88rem; margin-top: 6px; font-weight: 500; letter-spacing: 0.02em;">
                 Predict Early. Intervene Smartly. Protect Every Future.
             </p>
         </div>
         """, unsafe_allow_html=True)
         
-        # Login Form Container
-        with st.container():
-            st.markdown("""
-            <div style="
-                background: #FFFFFF;
-                padding: 30px 32px 20px 32px;
-                border-left: 1px solid #E2E8F0;
-                border-right: 1px solid #E2E8F0;
-                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
-            ">
-                <h3 style="margin-top: 0; color: #0F172A; font-size: 1.25rem;">Sign In to Portal</h3>
-                <p style="color: #64748B; font-size: 0.88rem; margin-bottom: 18px;">
-                    Enter your academic credentials or select a pre-configured role below.
-                </p>
+        # 2. Main Login Card Container
+        st.markdown("""
+        <div style="
+            background: #FFFFFF;
+            padding: 22px 26px 10px 26px;
+            border-left: 1px solid #E2E8F0;
+            border-right: 1px solid #E2E8F0;
+        ">
+            <div style="font-size: 1.15rem; font-weight: 700; color: #0F172A;">
+                Authorized Staff Access
             </div>
-            """, unsafe_allow_html=True)
-            
-            with st.form("login_form", clear_on_submit=False):
-                username_input = st.text_input(
-                    "Username or Institutional Email",
-                    placeholder="e.g. admin or counselor@eduguard.edu",
-                    help="Authorized staff username or registered institutional email address."
-                )
-                
-                password_input = st.text_input(
-                    "Password",
-                    type="password",
-                    placeholder="••••••••••••",
-                    help="Enter your password."
-                )
-                
-                remember_col, _ = st.columns([1, 1])
-                with remember_col:
-                    st.checkbox("Remember this workstation", value=True)
+            <div style="font-size: 0.82rem; color: #64748B; margin-top: 2px;">
+                Select a demo role below to auto-fill or enter your institutional credentials.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # 3. Demo Role Quick-Select Buttons (Clean & Non-patchwork)
+        demo_cols = st.columns(3)
+        for idx, (key, info) in enumerate(DEMO_ACCOUNTS.items()):
+            with demo_cols[idx]:
+                if st.button(info["label"], key=f"demo_btn_{key}", use_container_width=True, help=f"Auto-fill as {info['name']}"):
+                    st.session_state["login_username"] = info["username"]
+                    st.session_state["login_password"] = info["password"]
+                    st.rerun()
                     
-                submitted = st.form_submit_button("Sign In to EduGuard AI", use_container_width=True)
-                
-                if submitted:
-                    if not username_input or not password_input:
-                        st.error("Please enter both username and password.")
-                    else:
-                        user = authenticate_user(username_input, password_input)
-                        if user:
-                            st.session_state["logged_in"] = True
-                            st.session_state["user"] = user
-                            st.session_state["current_page"] = "Overview Dashboard"
-                            st.success(f"Welcome back, {user['full_name']}!")
-                            st.rerun()
-                        else:
-                            st.error("Invalid username or password. Please verify credentials.")
-                            
-            # Quick Demo Login Section
-            st.markdown("""
-            <div style="
-                background: #F8FAFC;
-                padding: 20px 32px 30px 32px;
-                border-radius: 0 0 16px 16px;
-                border: 1px solid #E2E8F0;
-                border-top: 1px dashed #CBD5E1;
-                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
-            ">
-                <div style="font-size: 0.82rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; text-align: center;">
-                    ⚡ Quick Demo Access (One-Click Sign In)
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+        # 4. Standard Login Form
+        with st.form("login_form", clear_on_submit=False):
+            username_input = st.text_input(
+                "Username or Institutional Email",
+                value=st.session_state["login_username"],
+                placeholder="e.g. admin or counselor@eduguard.edu"
+            )
             
-            qc1, qc2, qc3 = st.columns(3)
-            with qc1:
-                if st.button("👑 Administrator", use_container_width=True, help="Login as Dr. Sarah Jenkins (Institutional Admin)"):
-                    user = authenticate_user("admin", "admin123")
+            pwd_type = "text" if st.session_state["show_password"] else "password"
+            password_input = st.text_input(
+                "Password",
+                value=st.session_state["login_password"],
+                type=pwd_type,
+                placeholder="••••••••••••"
+            )
+            
+            # Row for Show Password & Remember me
+            ctrl_c1, ctrl_c2 = st.columns(2)
+            with ctrl_c1:
+                show_pwd = st.checkbox("👁️ Show Password", value=st.session_state["show_password"])
+                if show_pwd != st.session_state["show_password"]:
+                    st.session_state["show_password"] = show_pwd
+                    st.rerun()
+            with ctrl_c2:
+                remember_me = st.checkbox("Remember device", value=True)
+                
+            st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+            submitted = st.form_submit_button("🚀 Sign In to EduGuard AI", use_container_width=True, type="primary")
+            
+            if submitted:
+                clean_user = username_input.strip()
+                clean_pass = password_input.strip()
+                
+                if not clean_user or not clean_pass:
+                    st.error("Please provide both username and password to proceed.")
+                else:
+                    user = authenticate_user(clean_user, clean_pass)
                     if user:
                         st.session_state["logged_in"] = True
                         st.session_state["user"] = user
                         st.session_state["current_page"] = "Overview Dashboard"
+                        st.success(f"✓ Authenticated as {user['full_name']} ({user['role'].title()})")
                         st.rerun()
-            with qc2:
-                if st.button("🎓 Counselor", use_container_width=True, help="Login as Elena Vance, M.Ed. (Student Support)"):
-                    user = authenticate_user("counselor", "counselor123")
-                    if user:
-                        st.session_state["logged_in"] = True
-                        st.session_state["user"] = user
-                        st.session_state["current_page"] = "Overview Dashboard"
-                        st.rerun()
-            with qc3:
-                if st.button("👨‍🏫 Faculty", use_container_width=True, help="Login as Prof. Rajesh Sharma (CS Faculty)"):
-                    user = authenticate_user("prof_sharma", "faculty123")
-                    if user:
-                        st.session_state["logged_in"] = True
-                        st.session_state["user"] = user
-                        st.session_state["current_page"] = "Overview Dashboard"
-                        st.rerun()
+                    else:
+                        st.error("Invalid credentials. Please verify your username and password, or use one of the quick demo buttons above.")
                         
-            st.markdown("""
-            <div style="text-align: center; margin-top: 24px; color: #94A3B8; font-size: 0.80rem;">
-                Protected by Scikit-Learn Random Forest ML & SQLite Persistence<br>
-                EduGuard AI v2.4 Enterprise Edition
+        # 5. Footer Info Bar
+        st.markdown("""
+        <div style="
+            background: #F8FAFC;
+            padding: 16px 20px;
+            border-radius: 0 0 16px 16px;
+            border: 1px solid #E2E8F0;
+            border-top: 1px dashed #CBD5E1;
+            box-shadow: 0 8px 18px -4px rgba(0, 0, 0, 0.06);
+            text-align: center;
+        ">
+            <div style="font-size: 0.78rem; color: #64748B;">
+                🔒 Secured with <b>SHA-256 Hashing</b> & <b>SQLite Persistence</b><br>
+                EduGuard AI Enterprise Edition v2.4
             </div>
-            """, unsafe_allow_html=True)
+        </div>
+        """, unsafe_allow_html=True)
