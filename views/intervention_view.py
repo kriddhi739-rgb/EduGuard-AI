@@ -62,31 +62,18 @@ def render_intervention_view():
     unaddressed_high_risk = [s for s in urgent_students if s.get("intervention_count", 0) == 0]
     
     if unaddressed_high_risk:
-        st.markdown(f"""
-        <div style="
-            background: linear-gradient(90deg, #FEF2F2 0%, #FFF1F2 100%);
-            border-left: 5px solid #EF4444;
-            border-radius: 12px;
-            padding: 14px 18px;
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.08);
-        ">
-            <div>
-                <span style="font-weight: 700; color: #991B1B;">⚠️ Priority Alert:</span>
-                <span style="color: #7F1D1D; font-size: 0.90rem; margin-left: 6px;">
-                    <b>{len(unaddressed_high_risk)}</b> High-Risk students currently have no active retention intervention logged.
-                </span>
-            </div>
-            <span style="background: #FEE2E2; color: #991B1B; font-size: 0.78rem; font-weight: 700; padding: 4px 12px; border-radius: 20px;">
-                Outreach Mandated
-            </span>
-        </div>
-        """, unsafe_allow_html=True)
+        priority_alert_html = (
+            '<div style="background: linear-gradient(90deg, #FEF2F2 0%, #FFF1F2 100%); border-left: 5px solid #EF4444; '
+            'border-radius: 12px; padding: 14px 18px; margin-bottom: 18px; display: flex; align-items: center; '
+            'justify-content: space-between; flex-wrap: wrap; gap: 10px; box-shadow: 0 2px 6px rgba(239, 68, 68, 0.08);">'
+            '<div>'
+            '<span style="font-weight: 700; color: #991B1B;">⚠️ Priority Alert:</span>'
+            f'<span style="color: #7F1D1D; font-size: 0.90rem; margin-left: 6px;"><b>{len(unaddressed_high_risk)}</b> High-Risk students currently have no active retention intervention logged.</span>'
+            '</div>'
+            '<span style="background: #FEE2E2; color: #991B1B; font-size: 0.78rem; font-weight: 700; padding: 4px 12px; border-radius: 20px;">Outreach Mandated</span>'
+            '</div>'
+        )
+        st.markdown(priority_alert_html, unsafe_allow_html=True)
         
     # Main Tabs
     tab1, tab2, tab3 = st.tabs([

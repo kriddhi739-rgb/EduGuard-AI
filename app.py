@@ -85,31 +85,17 @@ with st.sidebar:
     st.markdown(get_sidebar_brand_html(), unsafe_allow_html=True)
     
     # User Profile Pill Card
-    st.markdown(f"""
-    <div style="
-        background: rgba(255, 255, 255, 0.07);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 12px;
-        padding: 12px 14px;
-        margin-bottom: 16px;
-    ">
-        <div style="font-size: 0.72rem; color: #94A3B8; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">
-            ACTIVE SESSION
-        </div>
-        <div style="font-size: 0.95rem; font-weight: 700; color: #FFFFFF; margin-top: 3px;">
-            {current_user.get('full_name', 'Authorized User')}
-        </div>
-        <div style="font-size: 0.78rem; color: #60A5FA; font-weight: 600; margin-top: 2px;">
-            {role_display}
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    profile_html = (
+        '<div style="background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.12); '
+        'border-radius: 12px; padding: 12px 14px; margin-bottom: 16px;">'
+        '<div style="font-size: 0.72rem; color: #94A3B8; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">ACTIVE SESSION</div>'
+        f'<div style="font-size: 0.95rem; font-weight: 700; color: #FFFFFF; margin-top: 3px;">{current_user.get("full_name", "Authorized User")}</div>'
+        f'<div style="font-size: 0.78rem; color: #60A5FA; font-weight: 600; margin-top: 2px;">{role_display}</div>'
+        '</div>'
+    )
+    st.markdown(profile_html, unsafe_allow_html=True)
     
-    st.markdown("""
-    <div style="font-size: 0.72rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; padding-left: 4px;">
-        NAVIGATION MENU
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div style="font-size: 0.72rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; padding-left: 4px;">NAVIGATION MENU</div>', unsafe_allow_html=True)
     
     # Navigation Items
     nav_items = [
@@ -135,24 +121,16 @@ with st.sidebar:
     # System & Model Status Widget
     metrics = model_bundle.get("metrics", {})
     acc_val = metrics.get("accuracy", 0.906) * 100
-    st.markdown(f"""
-    <div style="
-        background: rgba(16, 185, 129, 0.1);
-        border: 1px solid rgba(16, 185, 129, 0.3);
-        border-radius: 8px;
-        padding: 10px 12px;
-        margin-bottom: 14px;
-        font-size: 0.80rem;
-        color: #A7F3D0;
-    ">
-        <div style="display: flex; align-items: center; gap: 6px; font-weight: 700;">
-            <span style="color: #34D399; font-size: 10px;">●</span> Random Forest Active
-        </div>
-        <div style="font-size: 0.75rem; color: #D1FAE5; margin-top: 3px;">
-            Test Accuracy: <b>{acc_val:.1f}%</b> · 160 Trees
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    status_html = (
+        '<div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); '
+        'border-radius: 8px; padding: 10px 12px; margin-bottom: 14px; font-size: 0.80rem; color: #A7F3D0;">'
+        '<div style="display: flex; align-items: center; gap: 6px; font-weight: 700;">'
+        '<span style="color: #34D399; font-size: 10px;">●</span> Random Forest Active'
+        '</div>'
+        f'<div style="font-size: 0.75rem; color: #D1FAE5; margin-top: 3px;">Test Accuracy: <b>{acc_val:.1f}%</b> · 160 Trees</div>'
+        '</div>'
+    )
+    st.markdown(status_html, unsafe_allow_html=True)
     
     # Logout Button
     if st.button("🚪 Logout from Portal", use_container_width=True):

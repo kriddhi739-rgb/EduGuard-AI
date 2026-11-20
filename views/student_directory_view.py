@@ -85,11 +85,7 @@ def render_student_directory_view():
             use_container_width=True
         )
     with exp_c3:
-        st.markdown(f"""
-        <div style="text-align: right; padding-top: 8px; font-size: 0.88rem; color: #64748B;">
-            Showing <b>{len(df)}</b> student records matching criteria
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f'<div style="text-align: right; padding-top: 8px; font-size: 0.88rem; color: #64748B;">Showing <b>{len(df)}</b> student records matching criteria</div>', unsafe_allow_html=True)
         
     st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
     

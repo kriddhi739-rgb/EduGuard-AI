@@ -68,38 +68,23 @@ def render_dashboard_view():
     
     # Eye-Catchy Early Alert Banner for High-Risk Students
     if filtered_high > 0:
-        st.markdown(f"""
-        <div style="
-            background: linear-gradient(90deg, #FEF2F2 0%, #FFF1F2 100%);
-            border-left: 5px solid #EF4444;
-            border-radius: 12px;
-            padding: 14px 20px;
-            margin: 10px 0 20px 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.08);
-        ">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <span style="font-size: 1.6rem;">🚨</span>
-                <div>
-                    <div style="font-size: 0.98rem; font-weight: 700; color: #991B1B;">
-                        Action Required: {filtered_high} High-Risk Students Detected in Selected Cohort
-                    </div>
-                    <div style="font-size: 0.84rem; color: #B91C1C; margin-top: 2px;">
-                        Exhibiting severe deficits across attendance, academic standing, or pending tuition arrears.
-                    </div>
-                </div>
-            </div>
-            <div>
-                <span style="background: #FEE2E2; color: #991B1B; font-size: 0.80rem; font-weight: 700; padding: 6px 14px; border-radius: 20px; border: 1px solid #FECACA;">
-                    Prioritized Outreach Queue
-                </span>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        alert_html = (
+            '<div style="background: linear-gradient(90deg, #FEF2F2 0%, #FFF1F2 100%); border-left: 5px solid #EF4444; '
+            'border-radius: 12px; padding: 14px 20px; margin: 10px 0 20px 0; display: flex; align-items: center; '
+            'justify-content: space-between; flex-wrap: wrap; gap: 12px; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.08);">'
+            '<div style="display: flex; align-items: center; gap: 12px;">'
+            '<span style="font-size: 1.6rem;">🚨</span>'
+            '<div>'
+            f'<div style="font-size: 0.98rem; font-weight: 700; color: #991B1B;">Action Required: {filtered_high} High-Risk Students Detected in Selected Cohort</div>'
+            '<div style="font-size: 0.84rem; color: #B91C1C; margin-top: 2px;">Exhibiting severe deficits across attendance, academic standing, or pending tuition arrears.</div>'
+            '</div>'
+            '</div>'
+            '<div>'
+            '<span style="background: #FEE2E2; color: #991B1B; font-size: 0.80rem; font-weight: 700; padding: 6px 14px; border-radius: 20px; border: 1px solid #FECACA;">Prioritized Outreach Queue</span>'
+            '</div>'
+            '</div>'
+        )
+        st.markdown(alert_html, unsafe_allow_html=True)
         
     # Clean 3x2 Balanced Metric Grid (Responsive & Highly Legible)
     high_pct = (filtered_high / filtered_total * 100) if filtered_total > 0 else 0

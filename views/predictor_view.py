@@ -129,33 +129,17 @@ def render_predictor_view():
         res_col1, res_col2 = st.columns([1.2, 1.8])
         
         with res_col1:
-            st.markdown(f"""
-            <div style="
-                background: #FFFFFF;
-                border: 1px solid #E2E8F0;
-                border-radius: 14px;
-                padding: 24px 20px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-                text-align: center;
-            ">
-                <div style="font-size: 0.82rem; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.06em;">
-                    PREDICTED ATTRITION RISK
-                </div>
-                <div style="margin: 14px 0;">
-                    {get_risk_badge_html(risk_level)}
-                </div>
-                <div style="font-size: 2.8rem; font-weight: 800; color: #0F172A; line-height: 1.1; font-family: 'Plus Jakarta Sans', sans-serif;">
-                    {risk_score:.1f}<span style="font-size: 1.2rem; color: #94A3B8;">/100</span>
-                </div>
-                <div style="font-size: 0.82rem; color: #64748B; margin-top: 6px;">
-                    Continuous Dropout Risk Index
-                </div>
-                <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid #F1F5F9; font-size: 0.88rem; color: #334155;">
-                    <b>{result['student_name']}</b> ({result['student_id']})<br>
-                    <span style="color: #64748B; font-size: 0.82rem;">{result['department']}</span>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            res_card_html = (
+                '<div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 14px; padding: 24px 20px; '
+                'box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); text-align: center;">'
+                '<div style="font-size: 0.82rem; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.06em;">PREDICTED ATTRITION RISK</div>'
+                f'<div style="margin: 14px 0;">{get_risk_badge_html(risk_level)}</div>'
+                f'<div style="font-size: 2.8rem; font-weight: 800; color: #0F172A; line-height: 1.1; font-family: \'Plus Jakarta Sans\', sans-serif;">{risk_score:.1f}<span style="font-size: 1.2rem; color: #94A3B8;">/100</span></div>'
+                '<div style="font-size: 0.82rem; color: #64748B; margin-top: 6px;">Continuous Dropout Risk Index</div>'
+                f'<div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid #F1F5F9; font-size: 0.88rem; color: #334155;"><b>{result["student_name"]}</b> ({result["student_id"]})<br><span style="color: #64748B; font-size: 0.82rem;">{result["department"]}</span></div>'
+                '</div>'
+            )
+            st.markdown(res_card_html, unsafe_allow_html=True)
             
         with res_col2:
             st.subheader("📊 Multiclass Probability Breakdown")
@@ -184,19 +168,13 @@ def render_predictor_view():
                     
         with fact_col2:
             st.subheader("🛡️ AI-Recommended Early Intervention Plan")
-            st.markdown(f"""
-            <div style="
-                background: #EFF6FF;
-                border-left: 4px solid #2563EB;
-                border-radius: 8px;
-                padding: 18px;
-                font-size: 0.92rem;
-                color: #1E3A8A;
-                line-height: 1.5;
-            ">
-                <b>Action Strategy:</b><br>{result['advisory']}
-            </div>
-            """, unsafe_allow_html=True)
+            advisory_box_html = (
+                f'<div style="background: #EFF6FF; border-left: 4px solid #2563EB; border-radius: 8px; '
+                f'padding: 16px; font-size: 0.92rem; color: #1E3A8A; line-height: 1.5;">'
+                f'<b>Action Strategy:</b><br>{result["advisory"]}'
+                f'</div>'
+            )
+            st.markdown(advisory_box_html, unsafe_allow_html=True)
             
             rec_type = 'Academic Counseling' if result['cgpa'] < 6.0 else ('Attendance Improvement' if result['attendance'] < 70 else ('Financial Assistance' if result['fee_dues'] > 1500 else 'Academic Mentoring'))
             st.caption(f"Recommended Intervention Category: **{rec_type}**")

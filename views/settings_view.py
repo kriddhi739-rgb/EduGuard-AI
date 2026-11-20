@@ -157,9 +157,9 @@ def render_settings_view():
         # System & Version Info
         st.markdown("---")
         st.subheader("About EduGuard AI")
-        st.markdown("""
-        - **Platform:** EduGuard AI – AI-Powered Student Dropout Risk Prediction and Early Intervention System
-        - **Version:** 2.4.0 (Enterprise EdTech Edition)
-        - **Core Stack:** Python 3.13, Streamlit, Scikit-Learn, Pandas, Plotly, SQLite
-        - **Tagline:** *Predict Early. Intervene Smartly. Protect Every Future.*
-        """)
+        st.markdown(
+            "- **Platform:** EduGuard AI – AI-Powered Student Dropout Risk Prediction and Early Intervention System\n"
+            "- **Version:** 2.4.0 (Enterprise EdTech Edition)\n"
+            "- **Core Stack:** Python 3.13, Streamlit, Scikit-Learn, Pandas, Plotly, SQLite\n"
+            "- **Tagline:** *Predict Early. Intervene Smartly. Protect Every Future.*"
+        )
