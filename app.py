@@ -1,7 +1,7 @@
 """
 =============================================================================
 EduGuard AI – AI-Powered Student Dropout Risk Prediction & Early Intervention
-Main Application Entry Point & Navigation Architecture
+Main Application Entry Point & Navigation Architecture (v2.4.1)
 =============================================================================
 Tagline: Predict Early. Intervene Smartly. Protect Every Future.
 Stack: Streamlit, Scikit-Learn, Pandas, NumPy, Plotly, SQLite
