@@ -1,7 +1,6 @@
 """
 EduGuard AI - Modern Authentication View
-Provides a cohesive, responsive, eye-catching login portal with demo role selection,
-password visibility toggle, and instant error feedback.
+Cohesive, responsive login portal using 100% native Streamlit components.
 """
 
 import streamlit as st
@@ -32,7 +31,7 @@ DEMO_ACCOUNTS = {
 }
 
 def render_login_view():
-    """Renders the cohesive, modern authentication portal."""
+    """Renders the authentication portal using native Streamlit components."""
     
     # Session state initialization for pre-filled demo credentials
     if "login_username" not in st.session_state:
@@ -46,26 +45,16 @@ def render_login_view():
     _, center_col, _ = st.columns([1, 2.2, 1])
     
     with center_col:
-        # 1. Branded Header Card (Clean single-line HTML avoiding Markdown code-block parsing)
-        st.markdown(
-            '<div class="login-header">'
-            '<div class="login-logo">🎓</div>'
-            '<h1>EduGuard <span class="highlight">AI</span></h1>'
-            '<p>Predict Early. Intervene Smartly. Protect Every Future.</p>'
-            '</div>',
-            unsafe_allow_html=True
-        )
+        # 1. Native Streamlit Header (No raw HTML)
+        st.title("🎓 EduGuard AI")
+        st.markdown("**Predict Early. Intervene Smartly. Protect Every Future.**")
+        st.caption("AI-Powered Student Dropout Risk Prediction & Early Intervention System")
+        st.divider()
         
-        # 2. Main Login Subheader Card
-        st.markdown(
-            '<div class="login-subhead">'
-            '<div class="title">Authorized Staff Access</div>'
-            '<div class="subtitle">Select a demo role below to auto-fill or enter your institutional credentials.</div>'
-            '</div>',
-            unsafe_allow_html=True
-        )
+        st.subheader("Authorized Staff Access")
+        st.caption("Select a demo role below to auto-fill, or enter your institutional credentials:")
         
-        # 3. Demo Role Quick-Select Buttons
+        # 2. Demo Role Quick-Select Buttons
         demo_cols = st.columns(3)
         for idx, (key, info) in enumerate(DEMO_ACCOUNTS.items()):
             with demo_cols[idx]:
@@ -74,7 +63,7 @@ def render_login_view():
                     st.session_state["login_password"] = info["password"]
                     st.rerun()
                     
-        # 4. Standard Login Form
+        # 3. Standard Login Form
         with st.form("login_form", clear_on_submit=False):
             username_input = st.text_input(
                 "Username or Institutional Email",
@@ -119,10 +108,6 @@ def render_login_view():
                     else:
                         st.error("Invalid credentials. Please verify your username and password, or use one of the quick demo buttons above.")
                         
-        # 5. Footer Info Bar
-        st.markdown(
-            '<div class="login-footer">'
-            '🔒 Secured with <b>SHA-256 Hashing</b> & <b>SQLite Persistence</b><br>EduGuard AI Enterprise Edition v2.4'
-            '</div>',
-            unsafe_allow_html=True
-        )
+        # 4. Native Footer
+        st.divider()
+        st.caption("🔒 Secured with SHA-256 Hashing & SQLite Persistence · EduGuard AI Enterprise Edition v2.4")
