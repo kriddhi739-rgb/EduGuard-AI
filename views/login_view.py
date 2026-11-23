@@ -88,7 +88,6 @@ def render_login_view():
             with ctrl_c2:
                 remember_me = st.checkbox("Remember device", value=True)
                 
-            st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
             submitted = st.form_submit_button("🚀 Sign In to EduGuard AI", use_container_width=True, type="primary")
             
             if submitted:

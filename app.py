@@ -35,7 +35,7 @@ def inject_custom_css():
 inject_custom_css()
 
 # 3. Initialize Database & ML Components
-from backend.database import init_database
+from backend.database import init_database, get_connection
 from ml.predict import get_model_bundle
 from assets.branding import get_sidebar_brand_html
 
@@ -44,6 +44,20 @@ def bootstrap_system():
     """Initializes SQLite schema, seeds demo records, and loads ML model bundle."""
     init_database()
     bundle = get_model_bundle()
+
+    # Ensure students & initial logs exist even on fresh ephemeral containers
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM Students;")
+        student_count = cursor.fetchone()[0]
+        conn.close()
+        if student_count == 0 and bundle and "model" in bundle:
+            from ml.train_model import seed_sample_students_data
+            seed_sample_students_data(bundle["model"])
+    except Exception as e:
+        print(f"Bootstrap seeding check error: {e}")
+
     return bundle
 
 model_bundle = bootstrap_system()

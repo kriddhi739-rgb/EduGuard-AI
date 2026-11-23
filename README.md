@@ -265,5 +265,71 @@ Sign in using one of the demo accounts (`admin` / `admin123` or `counselor` / `c
 
 ---
 
+## ☁️ Deployment on Render (Render Web Services)
+
+EduGuard AI is pre-configured for seamless cloud deployment on [Render](https://render.com/).
+
+### Method 1: 1-Click Blueprint Deployment (Recommended)
+This repository contains a pre-configured `render.yaml` infrastructure-as-code file.
+1. Push this repository to your **GitHub** or **GitLab** account.
+2. Log in to [Render Dashboard](https://dashboard.render.com/).
+3. Click **New +** and select **Blueprint**.
+4. Connect your EduGuard AI repository and select the `render-deploy` branch.
+5. Render reads `render.yaml` automatically and configures the web service, build steps, start command, and environment variables.
+6. Click **Apply** to deploy!
+
+---
+
+### Method 2: Manual Web Service Setup
+If creating the Web Service manually via the Render UI:
+
+1. **Create Web Service:**
+   - In Render Dashboard, click **New +** > **Web Service**.
+   - Connect your EduGuard AI GitHub/GitLab repository.
+
+2. **Configure Service Settings:**
+   | Setting | Value |
+   | :--- | :--- |
+   | **Name** | `eduguard-ai` *(or your preferred name)* |
+   | **Language / Runtime** | `Python 3` |
+   | **Region** | Select closest region (e.g. `Oregon (US West)` or `Frankfurt (EU)`) |
+   | **Branch** | `render-deploy` |
+   | **Root Directory** | Leave empty *(root directory)* |
+   | **Build Command** | `pip install -r requirements.txt` |
+   | **Start Command** | `streamlit run app.py --server.address 0.0.0.0 --server.port $PORT --server.headless true` |
+   | **Instance Type** | `Free` *(or Starter)* |
+
+3. **Configure Environment Variables:**
+   Under the **Environment Variables** section, add:
+   | Key | Value | Purpose |
+   | :--- | :--- | :--- |
+   | `PYTHON_VERSION` | `3.11.9` | Locks the exact Python runtime version |
+   | `STREAMLIT_SERVER_HEADLESS` | `true` | Ensures Streamlit runs smoothly without browser prompts |
+   | `STREAMLIT_BROWSER_GATHER_USAGE_STATS` | `false` | Disables telemetry prompts |
+
+4. **Click "Deploy Web Service"**:
+   - Render runs `pip install -r requirements.txt`
+   - Render injects dynamic `$PORT` (e.g. `10000`)
+   - The application starts with `streamlit run app.py --server.address 0.0.0.0 --server.port $PORT --server.headless true`
+   - EduGuard AI boots up, initializes SQLite, verifies/trains the Random Forest model, and displays the actual public URL in the Render dashboard.
+
+> **Storage on Render:** This app uses SQLite in its service directory. On Render's default filesystem, database changes are not durable across redeploys or instance replacement. Use a paid persistent disk and configure the database path for it before relying on this deployment for ongoing records.
+>
+> **Demo credentials:** The included demo accounts are intended only for evaluation. Replace or disable them and protect access before using real student information.
+
+---
+
+### 🔑 Demo Accounts for Render Live Testing
+
+Once deployed on Render, log in using any of the following pre-configured institutional roles:
+
+- **👑 Administrator:** `admin` / `admin123` (Full system access, upload datasets, CRUD students, retrain ML models)
+- **🎓 Counselor:** `counselor` / `counselor123` (Directory, prediction, early intervention casework)
+- **👨‍🏫 Faculty:** `prof_sharma` / `faculty123` (View student risk, generate academic advisories)
+
+*(You can also use the one-click demo login buttons directly on the login page!)*
+
+---
+
 ## 🛡️ License & Academic Integrity
 Developed as a production-grade educational technology solution for student retention analytics. Distributed under the MIT License.

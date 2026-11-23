@@ -38,6 +38,11 @@ class EduGuardPDFReport(FPDF):
         self.set_text_color(148, 163, 184)
         self.cell(0, 8, f"Confidential Academic Report | Page {self.page_no()}", align="C")
 
+def pdf_output_bytes(pdf: FPDF) -> bytes:
+    """Return FPDF output as an immutable bytes object accepted by Streamlit."""
+    output = pdf.output()
+    return bytes(output) if isinstance(output, (bytes, bytearray)) else output.encode("latin-1")
+
 def generate_pdf_report(
     kpi_dict: Dict[str, Any], 
     students_df: pd.DataFrame, 
@@ -134,7 +139,7 @@ def generate_pdf_report(
         pdf.cell(26, 6, risk_level, border=1, fill=True, align="C")
         pdf.ln()
         
-    return pdf.output()
+    return pdf_output_bytes(pdf)
 
 def generate_student_pdf_dossier(student_dict: Dict[str, Any]) -> bytes:
     """Generates an individual student comprehensive prediction and intervention dossier in PDF."""
@@ -248,7 +253,7 @@ def generate_student_pdf_dossier(student_dict: Dict[str, Any]) -> bytes:
             pdf.multi_cell(182, 4, f"Advisory: {item.get('advisory')}\nCounselor: {item.get('assigned_counselor')} | Follow-up: {item.get('follow_up_date', 'N/A')}")
             pdf.ln(4)
             
-    return pdf.output()
+    return pdf_output_bytes(pdf)
 
 def generate_excel_report(kpi_dict: Dict[str, Any], students_df: pd.DataFrame) -> bytes:
     """Generates an Excel workbook with Summary sheet and Full Student Register."""
